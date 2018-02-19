@@ -1,0 +1,7 @@
+# Passwords
+
+At some point a while back, hackers dumped a ton of passwords from multiple breaches online. These passwords, some 1.5 billion of them, are now publicly available and should be considered unusable.
+
+The goal of this webapp is to provide a simple and relatively secure interface to checking whether a particular password already exists in this data set. The goal being that if it already exists, a potential account creator should not be allowed to use it and should be warned that this particular password has been compromised. The ideal use-case for this webapp is that it be run on a server that can only be accessed from your private network and the server used to create accounts on your system has a certificate and is able to make calls out to this webapp to check passwords before permitting clients to use them.
+
+*WARNING: This application is dangerous. It can trivially be misused. Therefore, this application does not come with the actual set of passwords, you must get it yourself and import the passwords yourself. The application also requires client-side authentication meaning that you have to have your own certificate authority and should only grant access to authorized clients. Furthermore, this application should not be accessed over the normal internet, but rather only through your LAN or VPN because it requires that passwords be sent to it in as unsalted SHA256 hashes. If you do not know what this means, do not use this application.*
