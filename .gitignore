@@ -296,4 +296,5 @@ flycheck_*.el
 # Log files (if you are creating logs in debug mode, uncomment this)
 # *.logs
 
-/.gitignore
+# Project Specific
+server_config.ini

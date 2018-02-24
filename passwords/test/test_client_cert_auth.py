@@ -1,11 +1,11 @@
-from passwords.webapp import ClientAuthApplication, APP, api_v0_1
+from passwords.webapp import api_v0_1, ClientAuthApplication, APP
 from passwords.utils import package_path
+import requests
+import pytest
+from time import sleep
+from multiprocessing import Process
 from contextlib import contextmanager
 from pathlib import Path
-from multiprocessing import Process
-import requests
-from time import sleep
-import pytest
 
 
 MY_PATH = Path(__file__)
@@ -13,7 +13,7 @@ PACKAGE_PATH = package_path(MY_PATH)
 
 
 @contextmanager
-def local_server(key_path: Path, cert_path: Path, ca_path: Path, port=8080):
+def local_server(key_path: Path, cert_path: Path, ca_path: Path, port=8080) -> None:
     """A context manager that spins up a client-auth gunicorn server as a
        separate process and then closes it when needed. Configured for
        testing with a low timeout."""
@@ -70,8 +70,7 @@ def test_self_signed_cert_client():
     eve_key_path = PACKAGE_PATH / 'passwords/test/resources/eve/eve.key'
     eve_cert_path = PACKAGE_PATH / 'passwords/test/resources/eve/eve.crt'
     with local_server(server_key_path, server_cert_path, ca_path) as host:
-        result = requests.get(host + api_v0_1('hello'), verify=str(ca_path), cert=(eve_cert_path, eve_key_path))
-        assert result.status_code == 200
+        requests.get(host + api_v0_1('hello'), verify=str(ca_path), cert=(eve_cert_path, eve_key_path))
 
 
 @pytest.mark.xfail(raises=requests.exceptions.SSLError)
@@ -84,5 +83,4 @@ def test_malicious_ca_client():
     mallory_key_path = PACKAGE_PATH / 'passwords/test/resources/mallory/mallory.key'
     mallory_cert_path = PACKAGE_PATH / 'passwords/test/resources/mallory/mallory.crt'
     with local_server(server_key_path, server_cert_path, ca_path) as host:
-        result = requests.get(host + api_v0_1('hello'), verify=str(ca_path), cert=(mallory_cert_path, mallory_key_path))
-        assert result.status_code == 200
+        requests.get(host + api_v0_1('hello'), verify=str(ca_path), cert=(mallory_cert_path, mallory_key_path))

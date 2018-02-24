@@ -1,6 +1,10 @@
 pytest
 pytest-cov
+pytest-mock
 gunicorn
 flask
 click
+arrow
 requests
+psycopg2
+voluptuous
